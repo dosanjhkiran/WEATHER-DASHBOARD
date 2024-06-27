@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard Project</title>
+    <link rel="stylesheet" href="./assets/css/style.css"/>
+</head>
+
+<body>
+    <header>
+        <nav><h1>Weather Dashboard</h1>
+        </nav>
+    </header>
+
+    <div> <!--Search Window-->
+        <label for="search-box">Search:</label>
+        <input type="search" id="search-box">
+        <button>Enter</button>
+     </div>
+
+    <div id="results"><!--Will be added dynamically when Enter button is clicked-->
+
+        <!-- Left side information-->
+        <div id="location-details">
+            <h2><!--Dyn: Location--></h2>
+            <p><!--Dyn: Location Description--></p>
+            <img><!-- Dyn: Location Image-->
+        </div>
+
+        <!--Right side forecast-->
+        <div id="location-weather">
+            <h2><!--Dyn: Today's Forecast: [API injected] --> </h2>
+            <div id="day1"><!--[API injected]--></div>
+            <div id="day2"><!--[API injected]--></div>
+            <div id="day3"><!--[API injected]--></div>
+            <div id="day4"><!--[API injected]--></div>
+            <div id="day5"><!--[API injected]--></div>
+            <div id="day6"><!--[API injected]--></div>
+            <div id="day7"><!--[API injected]--></div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Created by: Group B Members Arsham, Kirandeep & Jai</p>
+    </footer>
+
+</body>
+
+</html>
