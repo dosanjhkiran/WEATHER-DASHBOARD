@@ -1,0 +1,54 @@
+/* Setting Variables */
+:root {
+    --light-grey-bg-color: #eaeaea;
+    --black-font-color: #1d1d1f;
+    --white-bg-color: #fffff6;
+
+}
+
+/* Applies to whole page */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ============================================== */
+
+/* Navigation Styling */
+
+nav {
+    background-color: var(--light-grey-bg-color);
+    color: var(--black-font-color);
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+/* ============================================== */
+
+/* Search box styling */
+
+#search-window {
+    background-color: yellow;
+    text-align: center;
+}
+
+#button-div {
+    width: 100%;
+}
+
+button {
+    padding: 5px 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#search-feature {
+    padding-top: 20px;
+}
+
+/* ============================================== */
