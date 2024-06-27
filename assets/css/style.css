@@ -33,7 +33,7 @@ h1 {
 /* Search box styling */
 
 #search-window {
-    background-color: yellow;
+    background-color: var(--white-bg-color);
     text-align: center;
 }
 
