@@ -29,6 +29,12 @@ buttonElement.addEventListener('click', function(event) {
 
 
 function renderDashboardResults(searchQuery) {
+    // location-details-container div
+    // Declare h2 and p elements here and give them content from the API calls.
+    let locationName = document.getElementById("location-name");
+    let locationDesc = document.getElementById("location-desc");
+    let locationImage = document.getElementById("location-image");
+
     // API fetch request | "https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}"
     // This is for a single-day query.
     let fetchURLSingleDay = weatherAPIURL.concat("weather?q=", searchQuery, "&appid=", weatherAPIKeyAN);
@@ -41,7 +47,7 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            // Manage data here
+            locationName.textContent = data.name.concat(", ", data.sys.country);/* City name from API */;
         })
         .catch(error => {
             console.log(error); // prints the error in the console
@@ -66,9 +72,27 @@ function renderDashboardResults(searchQuery) {
             console.log(error);
         });
 
-    // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}"
-    // This is for a Google Image SafeSearch.
-    let fetchURLGoogleImage = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery)
+    // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
+    // This is for a Google SafeSearch.
+    let fetchURLGoogleDesc = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1")
+    fetch(fetchURLGoogleDesc)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("API response was not okay. (Google query)");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // SEE: data format.
+            locationDesc.innerHTML = data.items[0].htmlSnippet.concat("<a href=", data.items[0].formattedUrl, ">Read More.</a><br>Result retrieved from ", data.items[0].displayLink)/* City info from API */;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
+    // This is for a Google Images SafeSearch.
+    let fetchURLGoogleImage = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&searchType=image&num=1")
     fetch(fetchURLGoogleImage)
         .then(response => {
             if (!response.ok) {
@@ -78,23 +102,12 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            // Manage data here
+            locationImage.src = data.items[0].link
         })
         .catch(error => {
             console.log(error);
         });
 
-    // location-details-container div
-    // Create h2 and p elements here and give them content from the API calls.
-    let locationName = document.getElementById("location-name");
-    locationName.textContent = data.city.name, data.city.country;/* City name from API */;
-
-    let locationDesc = document.getElementById("location-desc");
-    locationDesc.textContent = "example2"/* City info from API */;
-
-    const locationDetails = document.getElementById("location-details-container")
-	    .appendChild(locationName) // h2
-	    .appendChild(locationDesc); // p
         // API Call to get location details
    
 
