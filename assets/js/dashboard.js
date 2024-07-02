@@ -18,7 +18,7 @@ console.log(searchHistory)
 // when a user clicks on the Enter button, 
 // the text will not disappear and it will render the dashboard results
 buttonElement.addEventListener('click', function(event) {
-    // event.preventDefault();
+    event.preventDefault();
     const searchQuery = document.getElementById("search-box").value;
 
     searchHistory.push(searchQuery); // Add query to searchHistory
@@ -44,7 +44,7 @@ function renderDashboardResults(searchQuery) {
             // Manage data here
         })
         .catch(error => {
-            console.log(error);
+            console.log(error); // prints the error in the console
         });
     
     
@@ -84,15 +84,12 @@ function renderDashboardResults(searchQuery) {
             console.log(error);
         });
 
-    // location-details div
+    // location-details-container div
     // Create h2 and p elements here and give them content from the API calls.
-    let locationName = document.createElement("h2");
-    console.log(locationName);
-    locationName.classList.add("example1"); // Add CSS classes here
+    let locationName = document.getElementById("location-name");
     locationName.textContent = data.city.name, data.city.country;/* City name from API */;
-    let locationDesc = document.createElement("p");
-    console.log(locationDesc);
-    locationDesc.classList.add("example2"); // Add CSS classes here
+
+    let locationDesc = document.getElementById("location-desc");
     locationDesc.textContent = "example2"/* City info from API */;
 
     const locationDetails = document.getElementById("location-details-container")
