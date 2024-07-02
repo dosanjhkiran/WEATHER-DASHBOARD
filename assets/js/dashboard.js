@@ -27,6 +27,9 @@ buttonElement.addEventListener('click', function(event) {
     renderDashboardResults(searchQuery);
     });
 
+function temperatureToCelcius(degreesKelvin) {
+    return (degreesKelvin - 273.15).toFixed(1).concat("°C")
+}
 
 function renderDashboardResults(searchQuery) {
     // location-details-container div
@@ -35,6 +38,13 @@ function renderDashboardResults(searchQuery) {
     let locationDesc = document.getElementById("location-desc");
     let locationImage = document.getElementById("location-image");
 
+    // location-weather div
+    // Declare h2 and div elements here and give them content from the API calls.
+    let weatherNow = document.getElementById("weather-now");
+    let weatherLow = document.getElementById("weather-low");
+    let weatherHigh = document.getElementById("weather-high");
+
+    // API Call to get weather details
     // API fetch request | "https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}"
     // This is for a single-day query.
     let fetchURLSingleDay = weatherAPIURL.concat("weather?q=", searchQuery, "&appid=", weatherAPIKeyAN);
@@ -48,6 +58,9 @@ function renderDashboardResults(searchQuery) {
         .then(data => {
             console.log(data); // SEE: data format.
             locationName.textContent = data.name.concat(", ", data.sys.country);/* City name from API */;
+            weatherNow.textContent = "Now: " + temperatureToCelcius(data.main.temp);
+            weatherLow.textContent = "Low: " + temperatureToCelcius(data.main.temp_min);
+            weatherHigh.textContent = "High: " + temperatureToCelcius(data.main.temp_max);
         })
         .catch(error => {
             console.log(error); // prints the error in the console
@@ -72,6 +85,7 @@ function renderDashboardResults(searchQuery) {
             console.log(error);
         });
 
+    // API Calls to get location details
     // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
     // This is for a Google SafeSearch.
     let fetchURLGoogleDesc = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1")
@@ -84,7 +98,7 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            locationDesc.innerHTML = data.items[0].htmlSnippet.concat("<a href=", data.items[0].formattedUrl, ">Read More.</a><br>Result retrieved from ", data.items[0].displayLink)/* City info from API */;
+            locationDesc.innerHTML = data.items[0].htmlSnippet.concat(" <a href=", data.items[0].formattedUrl, ">Read More</a><br>Result retrieved from ", data.items[0].displayLink)/* City info from API */;
         })
         .catch(error => {
             console.log(error);
@@ -108,19 +122,6 @@ function renderDashboardResults(searchQuery) {
             console.log(error);
         });
 
-        // API Call to get location details
-   
-
-    // location-weather div
-    // Create h2 and div elements here and give them content from the API calls.
-    let todaysWeatherForecast = document.createElement('h2');
-    todaysWeatherForecast.classList.add("example3") // Add CSS classes here
-    todaysWeatherForecast.textContent = "example3"/* Current weather from API */
-
     // TODO: Implement 5-day forecast.
-
-    const locationWeather = document.createElement('div')
-        .appendChild(todaysWeatherForecast);
-        // API Call to get weather details
     
 };
