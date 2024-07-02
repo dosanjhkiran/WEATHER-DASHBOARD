@@ -27,29 +27,27 @@
         <br>
         <!--Enter button-->
         <div id="button-div">
-            <button>Enter</button>
+            <button id="submit-button">Enter</button>
         </div>
      </div>
 
-    <div id="results"><!--Will be added dynamically when Enter button is clicked-->
+    <main id="dashboard-results"><!--Will be added dynamically when Enter button is clicked-->
 
         <!-- Left side information-->
-        <div id="location-details">
-            <h2><!--Dyn: Location--></h2>
-            <p><!--Dyn: Location Description--></p>
-            <img><!-- Dyn: Location Image-->
+        <div id="location-details-container">
+            <h2 id="location-name"><!-- Dyn: Location--></h2>
+            <p id="location-desc"><!-- Dyn: Location Description--></p>
+            <img id="location-image"/><!-- Dyn: Location Image-->
         </div>
 
         <!--Right side forecast-->
-        <div id="location-weather">
-            <h2><!--Dyn: Today's Forecast: [API injected] --> </h2>
+        <div id="location-weather-container">
+            <h2 id="todays-forecast"><!--Dyn: Today's Forecast: [API injected] --> </h2>
             <div id="day1"><!--[API injected]--></div>
             <div id="day2"><!--[API injected]--></div>
             <div id="day3"><!--[API injected]--></div>
             <div id="day4"><!--[API injected]--></div>
             <div id="day5"><!--[API injected]--></div>
-            <div id="day6"><!--[API injected]--></div>
-            <div id="day7"><!--[API injected]--></div>
         </div>
 
     </div>
@@ -58,7 +56,7 @@
         <p>Created by: Group B Members Arsham, Kirandeep & Jai</p>
         <p>Copyright Weather Dashboard 2024</p>
     </footer>
-
+    <script src="./assets/js/dashboard.js"></script>
 </body>
 
 </html>
