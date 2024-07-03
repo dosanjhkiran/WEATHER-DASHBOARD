@@ -1,4 +1,3 @@
-// setting up the variables 
 const buttonElement = document.getElementById("submit-button");
 const imageContainer = document.querySelector('img');
 
@@ -7,13 +6,13 @@ const weatherAPIKeyAN = "1b13b5ea93422ad65979d64bde392e76"; // Personal API key;
 
 const googleAPIURL = "https://www.googleapis.com/customsearch/v1?";
 const googleAPIKeyAN = "AIzaSyBClw4J_kiRJtoks3My-7A34NaVk9ZpjII"; // Personal API key; AN
-const googlePSEID = "c12965ece746243b4"; // Programmable Search Engine; request access here: https://programmablesearchengine.google.com/controlpanel/overview?cx=c12965ece746243b4
+const googlePSEID = "c12965ece746243b4"; // Programmable Search Engine
 
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")); // Get searchHistory from localStorage and parse it into an Array object.
 if (!searchHistory) { // If searchHistory did not exist in localStorage, set it to an empty Array object. null => []
     searchHistory = [];
 }
-console.log(searchHistory)
+console.log(searchHistory);
 
 // when a user clicks on the Enter button, 
 // the text will not disappear and it will render the dashboard results
@@ -25,10 +24,10 @@ buttonElement.addEventListener('click', function(event) {
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory)); // Update searchHistory in localStorage
 
     renderDashboardResults(searchQuery);
-    });
+});
 
 function temperatureToCelcius(degreesKelvin) {
-    return (degreesKelvin - 273.15).toFixed(1).concat("°C")
+    return (degreesKelvin - 273.15).toFixed(1).concat("°C");
 }
 
 function renderDashboardResults(searchQuery) {
@@ -66,8 +65,7 @@ function renderDashboardResults(searchQuery) {
             console.log(error); // prints the error in the console
         });
     
-    
-    // API fetch request | "api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}"
+    // API fetch request | "https://api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}"
     // This is for a 5-day query.
     let fetchURL5Day = weatherAPIURL.concat("forecast?q=", searchQuery, "&appid=", weatherAPIKeyAN);
     fetch(fetchURL5Day)
@@ -79,7 +77,8 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            // Manage data here
+            let daysData = get5DayForecast(data.list);
+            display5DayForecast(daysData);
         })
         .catch(error => {
             console.log(error);
@@ -88,8 +87,7 @@ function renderDashboardResults(searchQuery) {
     // API Calls to get location details
     // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
     // This is for a Google SafeSearch.
-    let fetchURLGoogleDesc = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1")
-    fetch(fetchURLGoogleDesc)
+    fetch(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1"))
         .then(response => {
             if (!response.ok) {
                 throw new Error("API response was not okay. (Google query)");
@@ -98,16 +96,15 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            locationDesc.innerHTML = data.items[0].htmlSnippet.concat(" <a href=", data.items[0].formattedUrl, ">Read More</a><br>Result retrieved from ", data.items[0].displayLink)/* City info from API */;
+            locationDesc.innerHTML = data.items[0].htmlSnippet.concat(" <a href=", data.items[0].formattedUrl, ">Read More</a><br>Result retrieved from ", data.items[0].displayLink);/* City info from API */;
         })
         .catch(error => {
-            console.log(error);
+            console.log("Error:", error); // prints the error in the console
         });
 
     // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
     // This is for a Google Images SafeSearch.
-    let fetchURLGoogleImage = googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&searchType=image&num=1")
-    fetch(fetchURLGoogleImage)
+    fetch(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&searchType=image&num=1"))
         .then(response => {
             if (!response.ok) {
                 throw new Error("API response was not okay. (Google images query)");
@@ -116,12 +113,55 @@ function renderDashboardResults(searchQuery) {
         })
         .then(data => {
             console.log(data); // SEE: data format.
-            locationImage.src = data.items[0].link
+            locationImage.src = data.items[0].link;
         })
         .catch(error => {
-            console.log(error);
+            console.log("Error:", error); // prints the error in the console
         });
+}
 
-    // TODO: Implement 5-day forecast.
-    
-};
+// Function to extract 5-day forecast data
+function get5DayForecast(dataList) {
+    let daysData = [];
+    let currentDate = "";
+
+    dataList.forEach(item => {
+        let date = item.dt_txt.split(" ")[0];
+        if (date !== currentDate) {
+            currentDate = date;
+            daysData.push({
+                date: new Date(date).toLocaleDateString(),
+                temp: item.main.temp,
+                weather: item.weather[0].description
+            });
+        }
+    });
+
+    return daysData.slice(0, 5); // Ensure only 5 days are returned
+}
+
+// Function to display 5-day forecast data
+function display5DayForecast(daysData) {
+    let forecastContainer = document.getElementById("forecast-container");
+    forecastContainer.innerHTML = "";
+
+    daysData.forEach(dayData => {
+        let forecastDiv = document.createElement("div");
+        forecastDiv.className = "forecast-day";
+        forecastDiv.innerHTML = `
+            <h3>${dayData.date}</h3>
+            <p>Temp: ${temperatureToCelcius(dayData.temp)}</p>
+            <p>Weather: ${dayData.weather}</p>
+        `;
+        forecastContainer.appendChild(forecastDiv);
+    });
+}
+// Function to display current wind speed
+function displayWindSpeed(speed, elementId) {
+    let windElement = document.getElementById(elementId);
+    if (windElement) {
+        windElement.textContent = `Wind Speed: ${speed.toFixed(1)} m/s`;
+    } else {
+        console.error(`Element with id ${elementId} not found`);
+    }
+}
