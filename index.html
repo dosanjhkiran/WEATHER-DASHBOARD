@@ -1,68 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
     
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset='UTF-8'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>Weather Dashboard Project</title>
-    <link rel="stylesheet" href="./assets/css/style.css"/>
     <!--Font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+    <link href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' rel='stylesheet'>
+    <!-- DaisyUI | Plugin for Tailwind CSS | Component Library -->
+    <link href='https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css' rel='stylesheet' type='text/css' />
+    <!-- Tailwind CSS -->
+    <script src='https://cdn.tailwindcss.com'></script>
+    <!-- Typical Normalise -->
+    <link rel='stylesheet' href='./assets/css/reset.css'/>
+    <!-- Custom Styles -->
+    <link rel='stylesheet' href='./assets/css/style.css'/>
+    <!-- DayJS -->
+    <script src='https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js'></script>
+    <script>dayjs().format()</script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                    // Colours are taken from CSS root variables. Update as needed.
+                    very_light_grey: '#eaeaea',
+                    light_grey: '#a6a6a6',
+                    dark_grey: '#616163',
+                    very_dark_grey: '#1d1d1f',
+                    white: '#ffffff', // white-bg-color
+                    off_white: '#f5f5f7', 
+                    },
+                }
+            },
+        }
+    </script>
 </head>
 
-<body>
-    <header>
-        <nav><h1>Weather Dashboard</h1>
-        </nav>
+<body class='flex flex-wrap bg-off_white text-very_dark_grey'>
+    <header class='py-6 w-full bg-very_light_grey text-center shadow-lg lg:hover:shadow-xl transition-shadow'>
+        <nav><h1 class='text-5xl font-extrabold'>Weather Dashboard</h1></nav>
     </header>
 
-    <div id="search-window"> <!--Entire Search Window-->
+    <!-- Open the modal using welcome-modal.showModal() method -->
+    <dialog id='welcome-modal' class='modal'>
+        <div class='modal-box'>
+            <h2 class='text-xl font-bold'>Welcome!</h2>
+            <!-- Welcome first time users! -->
+            <p class='py-4'>Hello first time user!<br>Welcome to our Weather Dashboard App.<br>Upon entering a search query you will be provided with information regarding the queried location and weather details 😄<br><br>Press ESC key or click outside to close</p>
+        </div>
+        <form method='dialog' class='modal-backdrop'>
+            <button></button> <!-- Close button -->
+        </form>
+    </dialog>
+
+    <!--Entire Search Window-->
+    <div class='p-4 m-4 bg-white w-full lg:w-3/4 text-center border-1 border-very_light_grey lg:rounded-lg shadow-lg lg:hover:shadow-xl transition-shadow flex flex-wrap justify-center' id='search-window'>
         <!--Search text and textbox-->
-        <div id="search-feature">
-            <label for="search-box">Search:</label>
-            <input type="search" id="search-box" placeholder="City,XX">
+        <div class='p-2 w-full lg:w-3/4 items-center flex justify-center items-center' id='search-feature'>
+            <label class='text-lg font-bold' for='search-box'>Search:</label>
+            <input class='p-2 m-2 w-3/5 lg:w-full text-lg rounded-lg border-2 border-very_light_grey focus:shadow-lg lg:hover:shadow-lg transition-shadow' type='search' id='search-box' placeholder='Suburb and/or City, XX' autocomplet='off'>
         </div>
-        <br>
         <!--Enter button-->
-        <div id="button-div">
-            <button id="submit-button">Enter</button>
+        <div class='w-full lg:w-3/4' id='button-div'>
+            <button class='text-lg font-bold btn btn-wide btn-very_dark_grey btn-outline lg:hover:shadow-md transition-shadow' id='submit-button'>Enter</button>
         </div>
+        <div class='m-4 w-3/4 items-center'>
+            <label class='text-very_dark_grey' for='recent-searches'>Recent Searches</label>
+            <ul class='p-2 flex flex-wrap bg-light_grey border-2 border-dark_grey rounded-lg shadow-lg lg:hover:shadow-xl transition-shadow hidden' id='recent-searches'>
+                <!--[JS injected]-->
+            </ul>
+        </div>
+        
      </div>
 
-    <main id="dashboard-results"><!--Will be added dynamically when Enter button is clicked-->
-
-        <!-- Left side information-->
-        <div id="location-details-container">
-            <h2 id="location-name"><!-- Dyn: Location--></h2>
-            <p id="location-desc"><!-- Dyn: Location Description--></p>
-            <img id="location-image"/><!-- Dyn: Location Image-->
-        </div>
-
-        <!--Right side forecast-->
-        <div id="location-weather-container">
-            <div id="todays-forecast">
-                <h2 id="weather-now"></h2>
-                <h3 id="weather-low"></h3>
-                <h3 id="weather-high"></h3>
-                <h3 id="current-wind-speed"></h3>
+    <main class='w-full flex flex-wrap flex-1 justify-center gap-4 hidden' id='dashboard-results'><!--Will be added dynamically when Enter button is clicked-->
+        <!--Left side forecast-->
+        <div class='bg-white my-4 py-4 w-5/6 lg:w-2/5 flex flex-wrap items-start justify-evenly border-1 border-very_light_grey rounded-lg shadow-lg lg:hover:shadow-xl transition-shadow' id='location-weather-container'>
+            <div class='p-2 my-2 w-5/6 flex flex-wrap justify-center text-center rounded-lg border-2 border-very_dark_grey border-dashed lg:hover:shadow-md transition-shadow' id='todays-forecast'>
+                <h2 class='p-2 w-full text-4xl font-bold' id='time-now'></h2>
+                <div class='p-2 w-full'>
+                    <div class='indicator'>
+                        <span class='indicator-item badge text-off_white bg-light_grey border-1 border-dark_grey' id='weather-now-indicator'></span>
+                        <h2 class='p-2 w-full text-4xl font-bold' id='weather-now'></h2>
+                    </div>
+                </div>
+                <div class='flex flex-wrap justify-center rounded-lg border-2 border-very_dark_grey border-dashed'>
+                    <h3 class='p-2 w-1/2 md:w-1/3 lg:w-full text-2xl' id='weather-low'></h3>
+                    <h3 class='p-2 w-1/2 md:w-1/3 lg:w-full text-2xl' id='weather-high'></h3>
+                    <h3 class='p-2 w-full text-2xl' id='wind-speed'></h3>
+                </div>
             </div>
-            <h2 ><!--Dyn: Today's Forecast: [API injected] --> </h2>
-            <div id="day1"><!--[API injected]--></div>
-            <div id="day2"><!--[API injected]--></div>
-            <div id="day3"><!--[API injected]--></div>
-            <div id="day4"><!--[API injected]--></div>
-            <div id="day5"><!--[API injected]--></div>
+            <div class='m-2 p-2 w-5/6 text-center rounded-lg border-2 border-very_dark_grey border-dashed lg:hover:shadow-md transition-shadow' id='5-day-forecast-container'>
+                <h2 class='p-2 text-4xl font-bold'>5-Day Forecast</h2>
+                <ul class='px-2 py-4 flex flex-wrap text-center justify-center items-center rounded-lg border-2 border-very_dark_grey border-dashed' id='5-day-forecast'>
+                    <!--[JS injected]-->
+                </ul>
+            </div>
         </div>
+        
+        <!-- Right side information-->
+        <div class='text-center bg-white my-4 py-4 w-5/6 lg:w-2/5 flex flex-wrap items-start justify-evenly border-1 border-very_light_grey rounded-lg shadow-lg lg:hover:shadow-xl transition-shadow' id='location-details-container'>
+            <h2 class='m-2 p-2 w-5/6 text-4xl font-bold text-center rounded-lg border-2 border-very_dark_grey border-dashed lg:hover:shadow-md transition-shadow' id='location-name'><!-- Dyn: Location--></h2>
+            <p class='my-2 p-4 w-5/6 text-lg text-center rounded-lg border-2 border-very_dark_grey border-dashed lg:hover:shadow-md transition-shadow' id='location-desc'><!-- Dyn: Location Description--></p>
+            <div class='w-5/6'>
+                <label class='text-very_dark_grey' for='location-image'>Retrieved image.</label>
+                <img class='w-full rounded-lg border-2 border-very_dark_grey border-dashed lg:hover:shadow-md transition-shadow' id='location-image'/><!-- Dyn: Location Image-->
+            </div>
+        </div>
+    </main>
 
-    </div>
-
-    <footer>
+    <div id='footer-div'></div>
+    <footer class='py-4 w-full bg-very_light_grey text-center'>
         <p>Created by: Group B Members Arsham, Kirandeep & Jai</p>
         <p>Copyright Weather Dashboard 2024</p>
     </footer>
-    <script src="./assets/js/dashboard.js"></script>
+    <script src='./assets/js/dashboard.js'></script>
 </body>
 
 </html>
