@@ -85,7 +85,15 @@ function renderDashboardResults(searchQuery) {
         });
 
     // API Calls to get location details
-    fetchWithRetry(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1"))
+    // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
+    // This is for a Google SafeSearch.
+    fetch(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&num=1"))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("API response was not okay. (Google query)");
+            }
+            return response.json();
+        })
         .then(data => {
             console.log(data); // SEE: data format.
             locationDesc.innerHTML = data.items[0].htmlSnippet.concat(" <a href=", data.items[0].formattedUrl, ">Read More</a><br>Result retrieved from ", data.items[0].displayLink);/* City info from API */;
@@ -94,7 +102,15 @@ function renderDashboardResults(searchQuery) {
             console.log("Error:", error); // prints the error in the console
         });
 
-    fetchWithRetry(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&searchType=image&num=1"))
+    // API fetch request | "https://www.googleapis.com/customsearch/v1?key={API key}&cx={PSE ID}&q={city name}&searchType=image&num=1"
+    // This is for a Google Images SafeSearch.
+    fetch(googleAPIURL.concat("key=", googleAPIKeyAN, "&cx=", googlePSEID, "&q=", searchQuery, "&searchType=image&num=1"))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("API response was not okay. (Google images query)");
+            }
+            return response.json();
+        })
         .then(data => {
             console.log(data); // SEE: data format.
             locationImage.src = data.items[0].link;
@@ -149,6 +165,3 @@ function displayWindSpeed(speed, elementId) {
         console.error(`Element with id ${elementId} not found`);
     }
 }
-
-
-
