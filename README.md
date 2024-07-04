@@ -3,6 +3,11 @@ This project was created to produce a sample Weather Dashboard app with travelle
 
 The application will display current weather conditions, a five-day forecast, as well as a description and image of the user-specified location.
 
+[![Application preview](./assets/images/application-preview.png)](https://dosanjhkiran.github.io/weather_dashboard/)
+
+Deployed Application URL: [https://dosanjhkiran.github.io/weather_dashboard/](https://dosanjhkiran.github.io/weather_dashboard/)
+Github Repository URL: [https://github.com/dosanjhkiran/weather_dashboard/](https://github.com/dosanjhkiran/weather_dashboard/)
+
 ## User Story
 As a user,
 I want to see weather icons representing the current weather and forecast,
@@ -63,6 +68,8 @@ AND the weather data is displayed on the webpage.
 
 ## Installation
 The project can be installed by downloading the repository into a zip file, opening it in a code editor such as VS Code, and viewing all HTML, CSS, and JavaScript files. Another option is to clone the repository using the git clone terminal command with the copied URL.
+
+[Installation instructions](./assets/images/installation-instruction.png)
 
 ## Usage
 The project can be viewed by opening the index.html file in your browser. Furthermore, you can inspect the code using Google Chrome Dev Tools. Head to the `Application` tab > `Local Storage` to view all that is saved within the **searchHistory** local storage after submitting a search query.
