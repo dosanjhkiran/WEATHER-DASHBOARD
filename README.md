@@ -9,21 +9,15 @@ Deployed Application URL: [https://dosanjhkiran.github.io/weather_dashboard/](ht
 Github Repository URL: [https://github.com/dosanjhkiran/weather_dashboard/](https://github.com/dosanjhkiran/weather_dashboard/)
 
 ## User Story
-As a user,
-I want to see weather icons representing the current weather and forecast,
-So that I can quickly understand the weather conditions.
+s a user planning a trip or daily activities, 
 
-As a User
-I want the webpage to be styled with CSS,
-So that it looks visually appealing and provides a good user experience.
+I want to easily find accurate weather information, relevant details and an image for better context  about any city by simply entering the suburb name or city name and country code. 
 
-As a User,
-I want the webpage to have a clear and semantic HTML structure,
-So that the content is easy to navigate and accessible.
+I want to see and receive detailed weather information for today, including the current temperature, high and low temperatures. 
 
-As a User,
-I want to fetch and display the current weather data for a default location,
-So that I can see how the JavaScript interacts with the weather API.
+I want a 5-day weather forecast, including the current temperature, high and low temperatures to help me plan ahead. 
+
+I want the information to be presented in a clean, easy-to-read format without unnecessary distractions, ensuring that I can quickly get the updates I need.
 
 ## Acceptance Criteria
 GIVEN the weather data fetched from the API,<br>
