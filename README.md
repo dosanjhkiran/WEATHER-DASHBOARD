@@ -69,7 +69,7 @@ AND the weather data is displayed on the webpage.
 ## Installation
 The project can be installed by downloading the repository into a zip file, opening it in a code editor such as VS Code, and viewing all HTML, CSS, and JavaScript files. Another option is to clone the repository using the git clone terminal command with the copied URL.
 
-[Installation instructions](./assets/images/installation-instruction.png)
+![Installation instructions](./assets/images/installation-instruction.png)
 
 ## Usage
 The project can be viewed by opening the index.html file in your browser. Furthermore, you can inspect the code using Google Chrome Dev Tools. Head to the `Application` tab > `Local Storage` to view all that is saved within the **searchHistory** local storage after submitting a search query.
